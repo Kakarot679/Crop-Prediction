@@ -1,282 +1,54 @@
-🌾 Crop Recommendation System using Machine Learning and Remote Sensing
-
-This project presents a Hierarchical Crop Recommendation System that predicts the most suitable crop for cultivation using machine learning, satellite-derived vegetation indices, soil data, and weather parameters.
-
-The system combines remote sensing data (NDVI/EVI) with environmental and geographic information to recommend crops through a two-stage machine learning pipeline.
-
-🚀 Key Features
-
-✔ Hierarchical Machine Learning Architecture
-✔ Season Prediction + Season-Specific Crop Recommendation
-✔ Integration of NDVI and EVI vegetation indices
-✔ Soil nutrient and weather parameter analysis
-✔ 73k+ agricultural dataset records
-✔ CatBoost-based classification models
-✔ Top-3 crop recommendation with confidence scores
-✔ React Frontend + FastAPI Backend architecture
-✔ Designed for research publication and real-world agricultural decision support
-
-🧠 System Architecture
-
-The system is divided into three layers:
-
-1️⃣ Frontend (React)
-
-The user interface allows farmers or users to input environmental conditions and location details.
-
-It collects inputs such as:
-
-State
-
-District
-
-Season
-
-NDVI
-
-EVI
-
-Soil nutrients (N, P, K)
-
-Soil pH
-
-Organic Carbon
-
-Rainfall
-
-Temperature
-
-The frontend sends these inputs to the backend API.
-
-2️⃣ Backend (FastAPI / Flask)
-
-The backend is responsible for:
-
-Loading trained machine learning models
-
-Preprocessing input data
-
-Predicting the agricultural season
-
-Selecting the appropriate crop model
-
-Generating crop recommendations
-
-The backend returns predictions in JSON format.
-
-3️⃣ Machine Learning Models (CatBoost)
-
-Four CatBoost models are used:
-
-Model	Purpose
-cb_season_predictor.cbm	Predicts agricultural season
-cb_crop_kharif_15groups.cbm	Predicts crop group for Kharif
-cb_crop_rabi_15groups.cbm	Predicts crop group for Rabi
-cb_crop_annual_15groups.cbm	Predicts crop group for Annual crops
-
-The system predicts Top-1 and Top-3 crop recommendations.
-
-🌱 Crop Groups
-
-Original crops were consolidated into 15 scientifically meaningful crop groups to improve model stability and classification accuracy.
-
-Examples include:
-
-Rice
-
-Wheat
-
-Maize
-
-Millets
-
-Pulses
-
-Oilseeds
-
-Fruits
-
-Vegetables
-
-Sugarcane
-
-Chickpea
-
-Soybean
-
-Groundnut
-
-Mustard
-
-Other Cereals
-
-Other Oilseeds
-
-📊 Dataset
-
-The dataset used in this project contains over 73,000 records with 54 features, including:
-
-Environmental Data
-
-NDVI
-
-EVI
-
-NDVI rolling averages
-
-EVI rolling averages
-
-Weather Data
-
-Rainfall
-
-Temperature
-
-Humidity
-
-Soil Parameters
-
-Nitrogen
-
-Phosphorus
-
-Potassium
-
-Soil pH
-
-Organic Carbon
-
-Micronutrients (Zn, Fe, Mn, Cu, B, S)
-
-Location Data
-
-State
-
-District
-
-Season
-
-Year
-
-⚙️ Machine Learning Pipeline
-
-The system uses a two-stage hierarchical model:
-
-Stage 1 — Season Prediction
-
-A CatBoost model predicts the agricultural season.
-
-Possible outputs:
-
-Kharif
-
-Rabi
-
-Annual
-
-Stage 2 — Crop Prediction
-
-Based on the predicted season, the corresponding crop model is used.
-
-Example:
-
-If season = Kharif
-→ Use Kharif crop model
-
-If season = Rabi
-→ Use Rabi crop model
-
-The crop model predicts probabilities for 15 crop groups and returns:
-
-Top-1 recommended crop
-
-Top-3 recommended crops with probabilities
-
-🔄 System Workflow
-User Input (React UI)
-        ↓
-Frontend sends POST request
-        ↓
-Backend receives JSON input
-        ↓
-Input preprocessing
-        ↓
-Season Model Prediction
-        ↓
-Select Season-Specific Crop Model
-        ↓
-Crop Probability Prediction
-        ↓
-Top-3 Crops Selected
-        ↓
-Backend sends JSON response
-        ↓
-Frontend displays results
-📈 Model Performance
-Model	Accuracy
-Season Prediction	~98%
-Kharif Crop Model	~35%
-Rabi Crop Model	~54%
-Annual Crop Model	~63%
-Final Hierarchical Accuracy
-
-Top-1 Accuracy: ~45%
-
-Top-3 Accuracy: ~85%
-
-These results are competitive with existing agricultural crop recommendation research.
-
-🛠 Technologies Used
-Machine Learning
-
-CatBoost
-
-Scikit-learn
-
-Pandas
-
-NumPy
-
-Backend
-
-FastAPI / Flask
-
-Python
-
-Frontend
-
-React
-
-JavaScript
-
-Data Sources
-
-Remote sensing vegetation indices
-
-Soil and environmental datasets
-
-📚 Research Contribution
-
-This project contributes a hybrid crop recommendation approach that integrates:
-
-Remote sensing vegetation indices
-
-Soil nutrient analysis
-
-Weather data
-
-Hierarchical machine learning
-
-The model architecture improves prediction reliability compared to single-stage crop classification systems.
-
-👨‍💻 Future Improvements
-
-Integrating real-time satellite imagery
-
-Mobile application for farmers
-
-Deep learning models for time-series NDVI
-
-Integration with weather forecasting APIs
-
-Region-specific crop yield optimization
+# Crop Recommendation System
+
+Machine learning project for hierarchical crop recommendation. The app predicts the agricultural season first, then uses the matching CatBoost crop model to recommend a crop group.
+
+## Project Structure
+
+```text
+finalyr-project/
+├── code/                 # Streamlit application code
+│   ├── app.py            # Main polished Streamlit app
+│   └── main.py           # Simpler Streamlit app version
+├── data/
+│   ├── processed/        # Final dataset used by the app
+│   └── raw/              # Original/source datasets
+├── models/               # Trained CatBoost model files
+├── notebooks/            # Training and experimentation notebooks
+├── reports/
+│   └── figures/          # Generated plots and result images
+├── docs/                 # Project documentation PDFs
+├── requirements.txt      # Python dependencies
+└── README.md
+```
+
+## Runtime Files
+
+The Streamlit app expects:
+
+- `data/processed/final_dataset_with_ndvi_15groups.csv`
+- `models/cb_season_predictor.cbm`
+- `models/cb_crop_kharif_15groups.cbm`
+- `models/cb_crop_rabi_15groups.cbm`
+- `models/cb_crop_annual_15groups.cbm`
+
+## Run The App
+
+From the project root:
+
+```bash
+pip install -r requirements.txt
+streamlit run code/app.py
+```
+
+For the simpler interface:
+
+```bash
+streamlit run code/main.py
+```
+
+## Model Flow
+
+1. Load the processed crop dataset.
+2. Predict the likely season with `cb_season_predictor.cbm`.
+3. Load the season-specific crop model.
+4. Return ranked crop-group suggestions with confidence scores.
